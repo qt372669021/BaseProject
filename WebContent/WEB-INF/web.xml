@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>BaseProject</display-name>
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  
+  
+  	<!-- 中文乱码处理 -->
+    <!-- 在Spring框架中是如何解决从页面传来的字符串的编码问题的呢？
+    下面我们来看看Spring框架给我们提供过滤器CharacterEncodingFilter  
+     这个过滤器就是针对于每次浏览器请求进行过滤的，然后再其之上添加了父类没有的功能即处理字符编码。  
+      其中encoding用来设置编码格式，forceEncoding用来设置是否理会 request.getCharacterEncoding()方法，设置为true则强制覆盖之前的编码格式。--> 
+  	<filter>
+  		<filter-name>CharacterEncodingFilter</filter-name>
+  		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+  	
+  		<init-param>
+  			<param-name>encoding</param-name>
+  			<param-value>UTF-8</param-value>
+  		</init-param>
+  		<init-param>
+  			<param-name>forceEncoding</param-name>
+  			<param-value>true</param-value>
+  		</init-param>
+  	</filter>
+  	
+  	<!-- 过滤所有请求 -->
+  	<filter-mapping>
+  		<filter-name>CharacterEncodingFilter</filter-name>
+  		<url-pattern>/*</url-pattern>
+  	</filter-mapping>
+  	
+  	<filter>
+  		<filter-name>HiddenHttpMethodFilter</filter-name>
+  		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+  	</filter>
+  	
+  	<filter-mapping>
+  		<filter-name>HiddenHttpMethodFilter</filter-name>
+  		<url-pattern>/*</url-pattern>
+  	</filter-mapping>
+  
+  	<!-- Spring配置文件信息 -->
+  	<context-param>
+  		<param-name>contextConfigLocation</param-name>
+  		<param-value>classpath:spring/applicationContext.xml</param-value>
+  	</context-param>
+  	
+  	<!-- ContextLoaderListener监听器 -->
+  	<!--ContextLoaderListener的作用就是启动Web容器时，自动装配ApplicationContext的配置信息。
+  		因为它实现了ServletContextListener这个接口，在web.xml配置这个监听器，启动容器时，就会默认执行它实现的方法。-->
+  	<listener>
+  		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  	</listener>
+  	
+  	<!-- 日志配置 -->
+	  <context-param>
+	   <param-name>log4jConfigLocation</param-name>
+	   <param-value>classpath:log4j.properties</param-value>
+	</context-param>
+	<listener>
+	   <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
+  
+  	<!-- 配置前端控制器 -->
+	<servlet>
+		<servlet-name>DispatcherServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:springmvc/springmvc.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>DispatcherServlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	
+	<!--当系统出现404错误，跳转到页面404.jsp-->  
+	<error-page>
+		<error-code>404</error-code>
+		<location>/WEB-INF/errors/404.jsp</location>
+	</error-page>
+
+	<error-page>
+		<error-code>500</error-code>
+		<location>/WEB-INF/errors/500.jsp</location>
+	</error-page>
+	
+  <!--当系统出现java.lang.NullPointerException，跳转到页面error.html-->  
+   <error-page> 
+        <exception-type>java.lang.NullPointerException</exception-type>  
+        <location>/error.html</location>  
+    </error-page>  
+   
+   <!--会话超时配置，单位分钟--> 
+     <session-config>  
+        <session-timeout>30</session-timeout>  
+    </session-config>  
+</web-app>
