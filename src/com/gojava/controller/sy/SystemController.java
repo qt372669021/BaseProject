@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/sy")
-public class SystemController {
+public class SystemController { 
 		
 //		@RequestMapping(value="/login",method=RequestMethod.GET)
 //		public  String  index(){
@@ -16,8 +16,8 @@ public class SystemController {
 		
 		@RequestMapping(value="/login",method=RequestMethod.GET)
 		public  ModelAndView  log(ModelAndView mv){
-			mv.addObject("msg", "大爷");
-			mv.setViewName("sy/login");
+			mv.addObject("msg", "大爷哦");
+			mv.setViewName("sy/login"); 
 			return  mv;
 		}
 }
