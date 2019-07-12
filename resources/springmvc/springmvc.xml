@@ -11,12 +11,12 @@
 
 	<!-- 只需要扫描包中的 Controller 注解 -->
 	<context:component-scan base-package="com.gojava.controller">
-	<context:include-filter type="annotation"
-		expression="org.springframework.stereotype.Controller" />
+		<context:include-filter type="annotation"  expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 
 	<!-- 启动 mvc 注解驱动 -->
-	<mvc:annotation-driven></mvc:annotation-driven>
+	<!-- 扩充了注解驱动，可以将请求参数绑定到控制参数-->
+	<mvc:annotation-driven/>
 	
 	<!-- 启动定时任务 -->
 	<task:annotation-driven/>
@@ -44,16 +44,15 @@
 	</bean>
 	
 	<!-- 后台访问拦截器 -->
-	<!--  -->
-	 <mvc:interceptors>
+<!-- 	 <mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/admin/**"/>
-			<mvc:mapping path="/system/*"/>
-			<mvc:exclude-mapping path="/system/login"/>
-			<mvc:exclude-mapping path="/system/get_cpacha"/>
+			<mvc:mapping path="/main/**"/>
+			<mvc:mapping path="/sy/*"/>
+			<mvc:exclude-mapping path="/sy/login"/>
+			<mvc:exclude-mapping path="/sy/get_cpacha"/>
 			<mvc:exclude-mapping path="/resources/**"/>
 			<bean class="com.gojava.util.interceptor.LoginInterceptor"></bean>
 		</mvc:interceptor>
-	</mvc:interceptors>
+	</mvc:interceptors> -->
 	 
 </beans>
