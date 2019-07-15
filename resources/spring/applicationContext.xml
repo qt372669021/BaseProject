@@ -98,6 +98,11 @@
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
 	</bean>
 
+	<bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
+		    <property name="basePackage" value="com.gojava.dao"/>
+		    <property name="markerInterface" value="com.gojava.common.IBaseMapper" />
+		</bean>
+
 	<bean id="gson" class="com.google.gson.Gson" scope="prototype"></bean>
 
 </beans>
