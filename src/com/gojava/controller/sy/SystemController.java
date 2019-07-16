@@ -13,22 +13,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import tk.mybatis.mapper.entity.Example;
-import tk.mybatis.mapper.entity.Example.Criteria;
-
-import com.github.pagehelper.util.StringUtil;
-import com.gojava.common.ResponseContent;
-import com.gojava.common.Result;
-import com.gojava.common.SystemException;
 import com.gojava.entity.sy.User;
 import com.gojava.service.sy.UserService;
 import com.gojava.util.cpacha.CpachaUtil;
 
 @Controller
-@RequestMapping("/sy")
+@RequestMapping("/system")
 public class SystemController { 
 	
 	@Autowired
@@ -39,9 +32,9 @@ public class SystemController {
 //			return  "login";
 //		}
 		
+		//访问登录页面
 		@RequestMapping(value="/login",method=RequestMethod.GET)
 		public  ModelAndView  log(ModelAndView mv){
-			mv.addObject("msg", "大爷哦");
 			mv.setViewName("sy/login"); 
 			return  mv;
 		}
@@ -56,10 +49,10 @@ public class SystemController {
 		*
 		 */
 		@RequestMapping(value="/yanzCode",method=RequestMethod.GET)
-		public void  getYanzCode( int vl,Integer w,	Integer h,@RequestParam(name="type",required=true,defaultValue="loginCpacha") String cpachaType,HttpServletRequest req,HttpServletResponse resp){
+		public void  getYanzCode( int vl,Integer w,	Integer h, String type,HttpServletRequest req,HttpServletResponse resp){
 			CpachaUtil  cu=new CpachaUtil(vl,w,h);
 			String  yzCode=cu.generatorVCode();//生成验证码
-			req.getSession().setAttribute(cpachaType, yzCode);
+			req.getSession().setAttribute("cpachaType", yzCode);
 			BufferedImage bimage=	cu.generatorRotateVCodeImage(yzCode, true);
 			try {
 				ImageIO.write(bimage, "gif", resp.getOutputStream());
@@ -68,11 +61,13 @@ public class SystemController {
 			}
 		}
 		
+		//登录表单提交处理控制器
 		@RequestMapping(value="/login",method=RequestMethod.POST)
+		@ResponseBody
 		public Map<String, String>  login(ModelAndView mv,HttpServletRequest req,User user,String cpacha){
 			Map<String, String> ret = new HashMap<String, String>();
 			try{
-				User u=userService.selectLogin(user, cpacha, req);
+				userService.selectLogin(user, cpacha, req);
 				ret.put("type", "success");
 				ret.put("msg","登陆成功！");
 			}catch(Exception e){
@@ -80,5 +75,17 @@ public class SystemController {
 				ret.put("msg",e.getMessage());
 			}
 			return ret;
+		}
+		//登录后的主页
+		@RequestMapping(value="/main",method=RequestMethod.GET)
+		public  ModelAndView  getMain(ModelAndView mv){
+			mv.setViewName("sy/main");
+			return  mv;
+		}
+		//首页
+		@RequestMapping(value="/home",method=RequestMethod.GET)
+		public  ModelAndView  getHome(ModelAndView mv){
+			mv.setViewName("sy/home");
+			return  mv;
 		}
 }

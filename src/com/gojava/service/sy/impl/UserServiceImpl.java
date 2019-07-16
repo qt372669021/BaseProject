@@ -8,9 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-
-
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.entity.Example.Criteria;
 
@@ -25,9 +22,8 @@ public class UserServiceImpl extends BaseServiceImpl<User,Serializable>implement
 	@Autowired
 	private UserDao  userDao;
 	
-	@SuppressWarnings("null")
 	@Override
-	public User selectLogin(User user,String cpacha, HttpServletRequest req) {
+	public void selectLogin(User user,String cpacha, HttpServletRequest req) {
 		if(user ==null){
 			 throw new SystemException("填写用户信息！");
 			}
@@ -40,6 +36,14 @@ public class UserServiceImpl extends BaseServiceImpl<User,Serializable>implement
 			if(StringUtil.isEmpty(cpacha)){
 				throw new SystemException("验证码不能为空！");
 			}
+			
+		Object  loginCpacha=	req.getSession().getAttribute("cpachaType");
+		if(loginCpacha==null){
+			throw new SystemException("会话超时！");
+		}
+			if(!cpacha.toUpperCase().equals(loginCpacha.toString().toUpperCase())){
+				throw new SystemException("验证码不正确！");
+			}
 			Example  example=new  Example(User.class);
 			Criteria cri=	example.createCriteria();
 			cri.andEqualTo("username", user.getUsername());
@@ -49,8 +53,10 @@ public class UserServiceImpl extends BaseServiceImpl<User,Serializable>implement
 			throw new SystemException("用户名或者密码错误！");
 		}else{
 			User  u=listUser.get(0);
+			if(!u.getPassword().equals(user.getPassword())){
+				throw new SystemException("密码错误！");
+			}
 			req.getSession().setAttribute("login_user", u);
-			return u;
 		}
 	}
 

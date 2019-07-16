@@ -1,6 +1,7 @@
 package com.gojava.common;
 
 
+
 public class Result {
 
 	private Integer code; // 状态码
@@ -13,54 +14,54 @@ public Result(){
 	}
 	
 
-	public static Result ok() {
-		return new Result(200);
-	}
-	
-	public static Result error() {
-        return new Result(101);
-    }
-	
-	public static Result error(String msg) {
-        return new Result(101, msg);
-    }
+public static Result ok() {
+	return new Result(ResponseStatusEnum.SUCCESS.code);
+}
 
-	public static Result ok(Object obj) {
-		return new Result(200, obj);
-	}
+public static Result error() {
+    return new Result(ResponseStatusEnum.FAIL.code);
+}
 
-	public Result(Integer code) {
-		super();
-		this.code = code;
-	}
+public static Result error(String msg) {
+    return new Result(ResponseStatusEnum.FAIL.code, msg);
+}
 
-	public Result(Integer code, Object obj) {
-		super();
-		this.code = code;
-		this.obj = obj;
-	}
+public static Result ok(Object obj) {
+	return new Result(ResponseStatusEnum.SUCCESS.code, obj);
+}
 
-	public Integer getCode() {
-		return code;
-	}
+public Result(Integer code) {
+	super();
+	this.code = code;
+}
 
-	public void setCode(Integer code) {
-		this.code = code;
-	}
+public Result(Integer code, Object obj) {
+	super();
+	this.code = code;
+	this.obj = obj;
+}
 
-	public String getMsg() {
-		return msg;
-	}
+public Integer getCode() {
+	return code;
+}
 
-	public void setMsg(String msg) {
-		this.msg = msg;
-	}
+public void setCode(Integer code) {
+	this.code = code;
+}
 
-	public Object getObj() {
-		return obj;
-	}
+public String getMsg() {
+	return msg;
+}
 
-	public void setObj(Object obj) {
-		this.obj = obj;
-	}
+public void setMsg(String msg) {
+	this.msg = msg;
+}
+
+public Object getObj() {
+	return obj;
+}
+
+public void setObj(Object obj) {
+	this.obj = obj;
+}
 }

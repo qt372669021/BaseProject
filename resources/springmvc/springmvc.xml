@@ -43,16 +43,16 @@
         </property>
 	</bean>
 	
-	<!-- 后台访问拦截器 -->
-<!-- 	 <mvc:interceptors>
+	<!-- 后台访问拦截器(直接访问以下规则的路径会拦截) -->
+	 <mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/main/**"/>
-			<mvc:mapping path="/sy/*"/>
-			<mvc:exclude-mapping path="/sy/login"/>
-			<mvc:exclude-mapping path="/sy/get_cpacha"/>
+			<mvc:mapping path="/system/*"/>
+			<mvc:exclude-mapping path="/system/login"/>
+			<mvc:exclude-mapping path="/system/yanzCode"/>
 			<mvc:exclude-mapping path="/resources/**"/>
 			<bean class="com.gojava.util.interceptor.LoginInterceptor"></bean>
 		</mvc:interceptor>
-	</mvc:interceptors> -->
+	</mvc:interceptors> 
 	 
 </beans>

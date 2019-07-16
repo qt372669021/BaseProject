@@ -11,7 +11,7 @@
   <link rel="stylesheet" media="screen" href="<%=request.getContextPath()%>/resources/admin/login/css/style.css">
   <link rel="stylesheet" type="text/css" href="../resources/admin/login/css/reset.css">
   
- <script src="<%=request.getContextPath()%>/resources/admin/login/js/jquery-1.8.0.min.js"></script>
+ <script src="<%=request.getContextPath()%>/resources/admin/login/js/jquery-1.9.1.min.js"></script>
 
 
 <body>
@@ -44,7 +44,7 @@
 					</div>
 				</div>
 				<div id="errorMsg"  class="login-center clearfix" style="color:red;"></div>
-				<div class="login-button" >登录</div>
+				<div class="login-button" onclick="loginbtn()">登录</div>
 			</div>
 	</div>
 <script type="text/javascript">
@@ -53,8 +53,12 @@
 	function changeCpacha(){
 		$("#cpacha-img").attr("src",'yanzCode?vl=4&w=150&h=40&type=loginCpacha&t=' + new Date().getTime());
 	}
+	
+	//当某一个组件失去焦点是，调用对应的校验方法
+ 	$("#username").blur(checkUsername);
+	$("#password").blur(checkPassword); 
 	function checkUsername() {
-		var username = $("#username").val();
+	var username = $("#username").val();
 		var reg_username = /^\w{5,6}$/;
 	    var flag = reg_username.test(username);
 	    if(flag){
@@ -67,7 +71,7 @@
         return flag;
     }
 	function checkPassword() {
-		var password = $("#password").val();
+	var password = $("#password").val();
 		var reg_password = /^\w{1}$/;
 	    var flag = reg_password.test(password);
 	    if(flag){
@@ -80,23 +84,10 @@
         return flag;
     }
 	//登陆按钮
-	document.querySelector(".login-button").onclick = function(){
-			var username = $("#username").val();
-			var password = $("#password").val();
-			var cpacha = $("#cpacha").val();
-			if(username == '' || username == 'undefined'){
-				alert("请填写用户名！");
-				return;
-			}
-			if(password == '' || password == 'undefined'){
-				alert("请填写密码！");
-				return;
-			}
-			if(cpacha == '' || cpacha == 'undefined'){
-				alert("请填写验证码！");
-				return;
-			}
-			
+	function loginbtn(){
+		var cpacha = $("#cpacha").val();
+		var password = $("#password").val();
+		var username = $("#username").val();
 			$.ajax({
 				url:'login',
 				data:{
@@ -108,15 +99,13 @@
 				dataType:'json',
 				success:function(data){
 					if(data.type == 'success'){
-						window.parent.location = 'index';//跳转到首页
+						window.location = '<%=request.getContextPath() %>/system/main';//跳转到首页
 					}else{
-						
-						alert(data.msg);
+						$("#errorMsg").html(data.msg);
 						changeCpacha();
 					}
 				}
 			});
-			
 	}
 	
 </script>
