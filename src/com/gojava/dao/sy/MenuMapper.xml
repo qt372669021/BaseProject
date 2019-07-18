@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gojava.dao.sy.MenuDao">
+	<!-- 菜单信息模糊分页搜索查询 -->
+	<select id="findList" parameterType="Map" resultType="Menu">
+		select * from menu where 1 = 1 
+		<if test="parentId != null">
+			and parentId = #{parentId}  
+		</if>
+		<if test="name != null">
+			and name like '%${name}%' 
+		</if>
+		<if test="offset != null and pageSize != null">
+			limit #{offset},#{pageSize}
+		</if>
+	</select>
+	<!-- 菜单信息模糊分页搜索查询总记录数 -->
+	<select id="getTotal" parameterType="Map" resultType="Integer">
+		select count(*) from menu where 1 = 1  
+		<if test="parentId != null">
+			and parentId = #{parentId}  
+		</if>
+		<if test="name != null">
+			and name like '%${name}%' 
+		</if>
+	</select>
+</mapper>

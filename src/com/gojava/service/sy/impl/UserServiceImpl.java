@@ -13,7 +13,7 @@ import tk.mybatis.mapper.entity.Example.Criteria;
 
 import com.github.pagehelper.util.StringUtil;
 import com.gojava.common.BaseServiceImpl;
-import com.gojava.common.SystemException;
+import com.gojava.common.exception.SystemException;
 import com.gojava.dao.sy.UserDao;
 import com.gojava.entity.sy.User;
 import com.gojava.service.sy.UserService;

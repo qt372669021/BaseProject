@@ -1,4 +1,4 @@
-package com.gojava.common;
+package com.gojava.common.exception;
 
 public class SystemException extends RuntimeException {
 

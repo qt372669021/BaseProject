@@ -30,6 +30,10 @@
 		<property name="suffix" value=".jsp"></property>
 	</bean>
 	
+	<!-- 全局异常解析器 -->
+	<bean class="com.gojava.common.exception.SystemExceptionResolver" />
+	
+	
 	<!-- 文件上传 -->
 	<bean id="multipartResolver" 
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
@@ -48,6 +52,7 @@
 		<mvc:interceptor>
 			<mvc:mapping path="/main/**"/>
 			<mvc:mapping path="/system/*"/>
+			<mvc:mapping path="/menu/**"/>
 			<mvc:exclude-mapping path="/system/login"/>
 			<mvc:exclude-mapping path="/system/yanzCode"/>
 			<mvc:exclude-mapping path="/resources/**"/>

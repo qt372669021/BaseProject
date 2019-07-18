@@ -85,11 +85,11 @@
 		<location>/WEB-INF/errors/404.jsp</location>
 	</error-page>
 
-	<error-page>
+	<!-- <error-page>
 		<error-code>500</error-code>
 		<location>/WEB-INF/errors/500.jsp</location>
 	</error-page>
-	
+	 -->
   <!--当系统出现java.lang.NullPointerException，跳转到页面error.html-->  
    <error-page> 
         <exception-type>java.lang.NullPointerException</exception-type>  
