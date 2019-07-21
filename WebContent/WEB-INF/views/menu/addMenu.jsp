@@ -1,8 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"  pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<style>
+.selected{
+	background:red;
+}
+</style>
 		<!-- 新增窗口 -->
-		<div id="add-dialog" class="easyui-dialog" data-options="closed:true,iconCls:'icon-save'" style="width:400px; padding:10px;">
+		<div id="add-dialog" class="easyui-dialog" data-options="closed:true,iconCls:'icon-save'" style="width:450px; padding:10px;">
 			<form id="add-form" method="post">
 		        <table>
 		            <tr>
@@ -14,9 +19,9 @@
 		                <td>
 		                	<select name="parentId" class="easyui-combobox" panelHeight="auto" style="width:268px">
 				                <option value="0">选择用户组</option>
-				                <option value="1">黄钻</option>
-				                <option value="2">红钻</option>
-				                <option value="3">蓝钻</option>
+				                <c:forEach items="${topMenu }" var="menu"> 
+				                	<option value="${menu.id }">${menu.name}</option>
+				                </c:forEach>
 			            	</select>
 		            	</td>
 		            </tr>
@@ -24,12 +29,21 @@
 		                <td align="right">菜单URL:</td>
 		                <td><input type="text" name="url" class="wu-text" /></td>
 		            </tr>
+		            
 		            <tr>
-		                <td valign="top" align="right">菜单图标:</td>
-		                <td><input type="text" name="icon" class="wu-text" /></td>
+			                <td align="right">菜单图标:</td>
+			                <td>
+			                	<input type="text" id="add-icon" name="icon" class="wu-text easyui-validatebox" data-options="required:true, missingMessage:'请填写菜单图标'" />
+			                	<a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="selectIcon()" plain="true">选择</a>
+			                </td>
 		            </tr>
 		        </table>
 		    </form>
+		</div>
+		
+		<!-- 选择图标弹窗 -->
+		<div id="select-icon-dialog" class="easyui-dialog" data-options="closed:true,iconCls:'icon-save'" style="width:820px; height:550px;   padding:10px;">
+			  <table id="icons-table" cellspacing="8"> </table>
 		</div>
 		
 		
@@ -85,4 +99,71 @@
             }]
         });
 	}
+	
+	//打开图标弹窗口
+			
+	function selectIcon(){
+		if($("#icons-table").children().length <= 0){//无数据时发请求
+			$.ajax({
+				url:'<%=request.getContextPath()%>/menu/get_icons',
+				dataType:'json',
+				type:'post',
+				success:function(data){
+					if(data.type == 'success'){
+						var icons = data.content;
+				//		console.log(icons); ["icon-accept", "icon-add"]
+						var table = '';
+						for(var i=0;i<icons.length;i++){
+							var tbody = '<td class="icon-td"><a onclick="selected(this)" href="javascript:void(0)" class="' + icons[i] + '">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></td>';
+							if(i == 0){
+								table += '<tr>' + tbody;
+								continue;
+							}
+							if((i+1)%24 === 0){
+								//console.log(i + '---' + i%12);
+								table += tbody + '</tr><tr>';
+								continue;
+							}
+							table += tbody;
+						}
+						table += '</tr>';
+						$("#icons-table").append(table);
+					}else{
+						$.messager.alert('信息提示',data.msg,'warning');
+					}
+				}
+			});
+		}
+		
+		$('#select-icon-dialog').dialog({
+			closed: false,
+			modal:true,
+            title: "选择icon信息",
+            buttons: [{
+                text: '确定',
+                iconCls: 'icon-ok',
+                handler: function(){
+                	var icon = $(".selected a").attr('class');
+                	console.log(icon);
+                	$("#add-icon").val(icon);
+                	$("#edit-icon").val(icon);
+                	$("#add-menu-icon").val(icon);
+                	$('#select-icon-dialog').dialog('close'); 
+                }
+            }, {
+                text: '取消',
+                iconCls: 'icon-cancel',
+                handler: function () {
+                    $('#select-icon-dialog').dialog('close');                    
+                }
+            }]
+        });
+	}
+	
+	function selected(e){
+		$(".icon-td").removeClass('selected');
+		$(e).parent("td").addClass('selected');
+		
+	}
+	
 </script>

@@ -1,7 +1,12 @@
 package com.gojava.controller.sy;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +30,9 @@ public class MenuController {
 	
 	@RequestMapping(value="/menuList",method=RequestMethod.GET)
 	public  ModelAndView  log(ModelAndView mv){
+		mv.addObject("topMenu", menuService.selectTolMenu());
 		mv.setViewName("menu/menuList"); 
+	
 		return  mv;
 	}
 	
@@ -67,18 +74,34 @@ public class MenuController {
 	}*/
 	
 	
-		@RequestMapping(value="/selectMenuList",method=RequestMethod.POST)
-		@ResponseBody
-		public Result selectMenuList( String name ,Page page){
-			Map<String,Object> map=menuService.selectAllMenu( name, page);
-			return Result.ok(map);
-		}
-		
-		@RequestMapping(value="/list2",method=RequestMethod.POST,produces = "application/json;charset=utf-8")
+		@RequestMapping(value="/selectMenuList",method=RequestMethod.POST,produces = "application/json;charset=utf-8")
 		@ResponseBody
 		public JSONObject getMenuList(Page page, String name){
-			JSONObject  obj=	menuService.selectAllMenu(name, page);
+			JSONObject  obj=menuService.selectAllMenu(name, page);
 			return  obj;
+		}
+		//获取系统下所有图标
+		@RequestMapping(value="/get_icons",method=RequestMethod.POST)
+		@ResponseBody
+		public   Map<String, Object> getIncons(HttpServletRequest req){
+			Map<String, Object> ret = new HashMap<String, Object>();
+		List<String> icons = new ArrayList<String>(); 
+		String realPath = req.getSession().getServletContext().getRealPath(File.separator);
+		File file = new File(realPath + "\\resources\\admin\\easyui\\css\\icons");
+		if(!file.exists()) {
+			ret.put("type", "error");
+			ret.put("msg", "文件目录不存在！");
+			return ret;
+		}
+		File[] files=file.listFiles();
+		for(File f:files) {
+			if(f!= null && f.getName().contains("png")){
+				icons.add("icon-" + f.getName().substring(0, f.getName().indexOf(".")).replace("_", "-"));
+			}
+		}
+		ret.put("type", "success");
+		ret.put("content", icons);
+		return ret;
 		}
 
 }

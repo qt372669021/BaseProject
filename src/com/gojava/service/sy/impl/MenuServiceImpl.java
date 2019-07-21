@@ -23,16 +23,18 @@ public class MenuServiceImpl  extends BaseServiceImpl<Menu,Serializable> impleme
 	private  MenuDao  menuDao;
 	@Override
 	public void addMenu(Menu menu) {
+		Map<String,Object> map=new HashMap<String,Object>();
 		if(menu==null){
-			throw  new SystemException("请填写信息");
+			throw  new SystemException("璇峰～鍐欎俊鎭�");
 		}
 		if(StringUtil.isEmpty(menu.getName())){
-			throw  new SystemException("菜单名称不能为空");
+			throw  new SystemException("鑿滃崟鍚嶇О涓嶈兘涓虹┖");
 		}
 		if(menu.getParentId() == null){
 			menu.setParentId(0l);
 		}
-			menuDao.insertSelective(menu);
+		map.put("map", menu);
+		menuDao.add(map);
 		
 	}
 	@Override
@@ -49,6 +51,11 @@ public class MenuServiceImpl  extends BaseServiceImpl<Menu,Serializable> impleme
 		obj.put("rows", listM);
 		obj.put("total", total);
 		return obj;
+	}
+	@Override
+	public List<Menu> selectTolMenu() {
+		List<Menu> lists=menuDao.selectTopMenu();
+		return lists;
 	}
 
 }

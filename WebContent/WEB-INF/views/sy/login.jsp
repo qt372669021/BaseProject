@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!DOCTYPE html>
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   
   <title>一起去Java管理系统</title>
@@ -10,8 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="stylesheet" media="screen" href="<%=request.getContextPath()%>/resources/admin/login/css/style.css">
   <link rel="stylesheet" type="text/css" href="../resources/admin/login/css/reset.css">
-  
- <script src="<%=request.getContextPath()%>/resources/admin/login/js/jquery-1.9.1.min.js"></script>
+  <script src="<%=request.getContextPath()%>/resources/admin/login/js/jquery-1.9.1.min.js"></script>
 
 
 <body>
@@ -47,68 +45,68 @@
 				<div class="login-button" onclick="loginbtn()">登录</div>
 			</div>
 	</div>
-<script type="text/javascript">
-	
-	//刷新验证码
-	function changeCpacha(){
-		$("#cpacha-img").attr("src",'yanzCode?vl=4&w=150&h=40&type=loginCpacha&t=' + new Date().getTime());
-	}
-	
-	//当某一个组件失去焦点是，调用对应的校验方法
- 	$("#username").blur(checkUsername);
-	$("#password").blur(checkPassword); 
-	function checkUsername() {
-	var username = $("#username").val();
-		var reg_username = /^\w{5,6}$/;
-	    var flag = reg_username.test(username);
-	    if(flag){
-            $("#username").css("border","");
-            $("#errorMsg").html(" ");
-		}else{
-			$("#username").css("border","1px solid red");
-			$("#errorMsg").html("账号长度有误！");
+	<script type="text/javascript">
+		
+		//刷新验证码
+		function changeCpacha(){
+			$("#cpacha-img").attr("src",'yanzCode?vl=4&w=150&h=40&type=loginCpacha&t=' + new Date().getTime());
 		}
-        return flag;
-    }
-	function checkPassword() {
-	var password = $("#password").val();
-		var reg_password = /^\w{1}$/;
-	    var flag = reg_password.test(password);
-	    if(flag){
-            $("#password").css("border","");
-            $("#errorMsg").html(" ");
-		}else{
-			$("#password").css("border","1px solid red");
-			$("#errorMsg").html("密码长度有误！");
-		}
-        return flag;
-    }
-	//登陆按钮
-	function loginbtn(){
-		var cpacha = $("#cpacha").val();
-		var password = $("#password").val();
+		
+		//当某一个组件失去焦点是，调用对应的校验方法
+	 	$("#username").blur(checkUsername);
+		$("#password").blur(checkPassword); 
+		function checkUsername() {
 		var username = $("#username").val();
-			$.ajax({
-				url:'login',
-				data:{
-					username:username,
-					password:password,
-					cpacha:cpacha
-					},
-				type:'post',
-				dataType:'json',
-				success:function(data){
-					if(data.type == 'success'){
-						window.location = '<%=request.getContextPath() %>/system/main';//跳转到首页
-					}else{
-						$("#errorMsg").html(data.msg);
-						changeCpacha();
+			var reg_username = /^\w{5,6}$/;
+		    var flag = reg_username.test(username);
+		    if(flag){
+	            $("#username").css("border","");
+	            $("#errorMsg").html(" ");
+			}else{
+				$("#username").css("border","1px solid red");
+				$("#errorMsg").html("账号长度有误！");
+			}
+	        return flag;
+	    }
+		function checkPassword() {
+		var password = $("#password").val();
+			var reg_password = /^\w{5,6}$/;
+		    var flag = reg_password.test(password);
+		    if(flag){
+	            $("#password").css("border","");
+	            $("#errorMsg").html(" ");
+			}else{
+				$("#password").css("border","1px solid red");
+				$("#errorMsg").html("密码长度有误！");
+			}
+	        return flag;
+	    }
+		//登陆按钮
+		function loginbtn(){
+			var cpacha = $("#cpacha").val();
+			var password = $("#password").val();
+			var username = $("#username").val();
+				$.ajax({
+					url:'login',
+					data:{
+						username:username,
+						password:password,
+						cpacha:cpacha
+						},
+					type:'post',
+					dataType:'json',
+					success:function(data){
+						if(data.type == 'success'){
+							window.location = '<%=request.getContextPath() %>/system/main';//跳转到首页
+						}else{
+							$("#errorMsg").html(data.msg);
+							changeCpacha();
+						}
 					}
-				}
-			});
-	}
-	
-</script>
+				});
+			}
+		
+	</script>
 </body>
 
 </html>					

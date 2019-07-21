@@ -1,6 +1,7 @@
 package com.gojava.entity.sy;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -19,6 +20,7 @@ import lombok.Setter;
 @Setter
 public class Menu {
 	@Id
+	@GeneratedValue(generator = "JDBC")
 	private Long id;
 	@Column(name="parentId")
 	private Long parentId;//父类id

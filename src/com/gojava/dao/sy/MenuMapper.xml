@@ -3,6 +3,14 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gojava.dao.sy.MenuDao">
+	<resultMap id="ResultMenu" type="com.gojava.entity.sy.Menu">
+		<result  column="id" 			property="id" 				jdbcType="NUMERIC" />
+		<result  column="parentId" 		property="parentId" 		jdbcType="NUMERIC" />
+		<result  column="name" 			property="name" 			jdbcType="VARCHAR" />
+		<result  column="url" 			property="url" 				jdbcType="VARCHAR" />
+		<result  column="icon" 			property="icon" 			jdbcType="VARCHAR" />
+	</resultMap>
+	
 	<!-- 菜单信息模糊分页搜索查询 -->
 	<select id="findList" parameterType="Map" resultType="Menu">
 		select * from menu where 1 = 1 
@@ -25,5 +33,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="name != null">
 			and name like '%${name}%' 
 		</if>
+	</select>
+	
+		<select id="selectTopMenu"  resultMap="ResultMenu">
+		select * from menu where 1 = 1  and parentId=0
+	</select>
+	
+	<select id="add"  parameterType="Map">
+		insert into menu(id,parentId,name,url,icon) values(null,#{map.parentId},#{map.name},#{map.url},#{map.icon})
 	</select>
 </mapper>
