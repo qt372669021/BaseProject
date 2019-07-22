@@ -8,9 +8,12 @@ import com.gojava.util.Page;
 
 public interface MenuService {
 	public  void addMenu(Menu menu);
+	public  void deleteMenu(Menu menu);
+	public  void  edit(Menu menu);
 	
 	public  JSONObject  selectAllMenu(String name,Page page);
 	
 	public  List<Menu>  selectTolMenu();
+	
 	
 }

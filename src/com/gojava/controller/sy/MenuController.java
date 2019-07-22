@@ -103,5 +103,17 @@ public class MenuController {
 		ret.put("content", icons);
 		return ret;
 		}
-
+		@RequestMapping(value="/edit",method=RequestMethod.POST)
+		@ResponseBody
+		public Result edit(Menu menu){
+			menuService.edit(menu);
+			return Result.ok();
+		}
+		
+		@RequestMapping(value="/delete",method=RequestMethod.POST)
+		@ResponseBody
+		public Result delete(Menu menu){
+			menuService.deleteMenu(menu);
+			return Result.ok();
+		}
 }

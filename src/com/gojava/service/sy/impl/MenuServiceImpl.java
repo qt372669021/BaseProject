@@ -57,5 +57,27 @@ public class MenuServiceImpl  extends BaseServiceImpl<Menu,Serializable> impleme
 		List<Menu> lists=menuDao.selectTopMenu();
 		return lists;
 	}
+	@Override
+	public void edit(Menu menu) {
+		if(StringUtil.isEmpty(menu.getName())){
+			throw new SystemException("菜单名不能为空");
+		}
+		if(StringUtil.isEmpty(menu.getParentId().toString())){
+			menu.setParentId(0l);
+		}
+		Map<String,Object> map=new HashMap<String,Object>();
+		map.put("map", menu);
+		menuDao.edit(map);
+	}
+	@Override
+	public void deleteMenu(Menu menu) {
+		Map<String,Object> map=new HashMap<String,Object>();
+		List<Menu> listM=	menuDao.selectChildByParentId(menu.getId());
+		if(listM !=null && listM.size()>0){
+		throw new SystemException("改菜单存在下级不能删除");
+		}
+		map.put("menu", menu.getId());
+		menuDao.deleteMenu(map);
+	}
 
 }

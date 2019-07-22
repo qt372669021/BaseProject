@@ -38,8 +38,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<select id="selectTopMenu"  resultMap="ResultMenu">
 		select * from menu where 1 = 1  and parentId=0
 	</select>
-	
+	<!-- 增加 -->
 	<select id="add"  parameterType="Map">
 		insert into menu(id,parentId,name,url,icon) values(null,#{map.parentId},#{map.name},#{map.url},#{map.icon})
+	</select>
+	<!-- 修改 -->
+	<select id="edit" parameterType="Map">
+		update menu set name=#{map.name},parentId=#{map.parentId},url=#{map.url},icon=#{map.icon} where  id=#{map.id}
+	</select>
+	<!-- 删除 -->
+	<select id="deleteMenu" parameterType="hashmap">
+		delete from  menu  where  id=#{menu.id}
+	</select>
+	
+	<!-- 获取某一分类的子菜单信息 -->
+	<select id="selectChildByParentId" parameterType="Long" resultMap="ResultMenu">
+		select * from  menu  where   parentId=#{parentId}
 	</select>
 </mapper>

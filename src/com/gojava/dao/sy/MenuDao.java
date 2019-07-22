@@ -10,5 +10,8 @@ public interface MenuDao extends IBaseMapper<Menu> {
 	public List<Menu> findList(Map<String, Object> queryMap);
 	public int getTotal(Map<String, Object> queryMap);
 	public void add(Map<String,Object> map);
+	public void  deleteMenu(Map<String,Object> map);
+	public  List<Menu> selectChildByParentId(Long parentId);
 	public  List<Menu> selectTopMenu();
+	public  void  edit(Map<String,Object> map);
 }
