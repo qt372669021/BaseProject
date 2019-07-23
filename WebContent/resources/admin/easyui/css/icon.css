@@ -8,7 +8,11 @@
 
 .icon-edit{ background:url('icons/pencil.png') no-repeat center center;}
 
+.edit_D2{ background:url('icons/edit_D2.png') no-repeat center center;}
+
 .icon-remove{ background:url('icons/edit_remove.png') no-repeat center center;}
+
+.delete_D2{ background:url('icons/delete_D2.png') no-repeat center center;}
 
 .icon-save{ background:url('icons/filesave.png') no-repeat center center;}
 
@@ -47,6 +51,8 @@
 .icon-accept { background:url('icons/accept.png') no-repeat center center;}
 
 .icon-add { background:url('icons/add.png') no-repeat center center;}
+
+.icon-adD2 { background:url('icons/add_D2.png') no-repeat center center;}
 
 .icon-add1 { background:url('icons/add1.png') no-repeat center center;}
 

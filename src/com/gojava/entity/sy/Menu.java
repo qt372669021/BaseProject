@@ -20,7 +20,6 @@ import lombok.Setter;
 @Setter
 public class Menu {
 	@Id
-	@GeneratedValue(generator = "JDBC")
 	private Long id;
 	@Column(name="parentId")
 	private Long parentId;//父类id
@@ -31,5 +30,6 @@ public class Menu {
 	private String name;//菜单名称
 	private String url;//点击后的url
 	private String icon;//菜单icon图标
+	
 	
 }

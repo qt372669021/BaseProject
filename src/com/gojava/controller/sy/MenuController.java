@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -103,6 +104,8 @@ public class MenuController {
 		ret.put("content", icons);
 		return ret;
 		}
+		
+		
 		@RequestMapping(value="/edit",method=RequestMethod.POST)
 		@ResponseBody
 		public Result edit(Menu menu){
@@ -112,8 +115,8 @@ public class MenuController {
 		
 		@RequestMapping(value="/delete",method=RequestMethod.POST)
 		@ResponseBody
-		public Result delete(Menu menu){
-			menuService.deleteMenu(menu);
+		public Result delete(@RequestParam(name="id",required=true)Long id){
+			menuService.deleteMenu(id);
 			return Result.ok();
 		}
 }

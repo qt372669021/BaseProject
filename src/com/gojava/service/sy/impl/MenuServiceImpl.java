@@ -70,14 +70,12 @@ public class MenuServiceImpl  extends BaseServiceImpl<Menu,Serializable> impleme
 		menuDao.edit(map);
 	}
 	@Override
-	public void deleteMenu(Menu menu) {
-		Map<String,Object> map=new HashMap<String,Object>();
-		List<Menu> listM=	menuDao.selectChildByParentId(menu.getId());
+	public void deleteMenu(Long id) {
+		List<Menu> listM=	menuDao.selectChildByParentId(id);
 		if(listM !=null && listM.size()>0){
 		throw new SystemException("改菜单存在下级不能删除");
 		}
-		map.put("menu", menu.getId());
-		menuDao.deleteMenu(map);
+		menuDao.deleteMenu(id);
 	}
 
 }
