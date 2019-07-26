@@ -53,6 +53,7 @@
 			<mvc:mapping path="/main/**"/>
 			<mvc:mapping path="/system/*"/>
 			<mvc:mapping path="/menu/**"/>
+			<mvc:mapping path="/role/**"/>
 			<mvc:exclude-mapping path="/system/login"/>
 			<mvc:exclude-mapping path="/system/yanzCode"/>
 			<mvc:exclude-mapping path="/resources/**"/>

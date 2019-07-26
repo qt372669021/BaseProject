@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gojava.dao.sy.AuthorityDao">
+	<resultMap id="ResultAuthority" type="com.gojava.entity.sy.Authority">
+		<result  column="id" 				property="id" 				jdbcType="NUMERIC" />
+		<result  column="roleId" 			property="roleId" 			jdbcType="NUMERIC" />
+		<result  column="menuId" 			property="menuId" 			jdbcType="NUMERIC" />
+	</resultMap>
+	
+</mapper>

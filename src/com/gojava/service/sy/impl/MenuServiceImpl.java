@@ -71,11 +71,18 @@ public class MenuServiceImpl  extends BaseServiceImpl<Menu,Serializable> impleme
 	}
 	@Override
 	public void deleteMenu(Long id) {
+		if(StringUtil.isEmpty(id.toString())){
+			throw new SystemException("请选择菜单！");
+		}
 		List<Menu> listM=	menuDao.selectChildByParentId(id);
 		if(listM !=null && listM.size()>0){
-		throw new SystemException("改菜单存在下级不能删除");
+		throw new SystemException("该菜单存在子菜单不能删除");
 		}
 		menuDao.deleteMenu(id);
+	}
+	@Override
+	public List<Menu> getAllMenu() {
+		return  menuDao.selectAll();
 	}
 
 }

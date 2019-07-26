@@ -34,8 +34,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			and name like '%${name}%' 
 		</if>
 	</select>
-	
-		<select id="selectTopMenu"  resultMap="ResultMenu">
+	<!-- 查询顶级菜单 -->
+	<select id="selectTopMenu"  resultMap="ResultMenu">
 		select * from menu where 1 = 1  and parentId=0
 	</select>
 	<!-- 增加 -->
@@ -51,7 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		delete from menu where id = #{id}
 	</delete>
 	
-	<!-- 获取某一分类的子菜单信息 -->
+	<!-- 获取某菜单的子菜单信息 -->
 	<select id="selectChildByParentId" parameterType="Long" resultMap="ResultMenu">
 		select * from  menu  where   parentId=#{parentId}
 	</select>

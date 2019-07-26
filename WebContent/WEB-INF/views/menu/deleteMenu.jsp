@@ -8,24 +8,20 @@
 	function remove(){
 		$.messager.confirm('信息提示','确定要删除该记录？', function(result){
 			if(result){
-				var items = $('#wu-datagrid-2').datagrid('getSelections');
-				var ids = [];
-				$(items).each(function(){
-					ids.push(this.productid);	
-				});
-				//alert(ids);return;
+				var item = $('#data-datagrid').datagrid('getSelected');
 				$.ajax({
-					url:'',
-					data:'',
+					url:'<%=request.getContextPath()%>/menu/delete',
+					dataType:'json',
+					type:'post',
+					data:{id:item.id},
 					success:function(data){
-						if(data){
-							$.messager.alert('信息提示','删除成功！','info');		
+						if(data.code == 200){
+							$.messager.alert('信息提示','删除成功！','info');
+							$('#data-datagrid').treegrid('reload');
+						}else{
+							$.messager.alert('信息提示',data.msg,'warning');
 						}
-						else
-						{
-							$.messager.alert('信息提示','删除失败！','info');		
-						}
-					}	
+					}
 				});
 			}	
 		});

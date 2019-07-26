@@ -13,6 +13,11 @@ public interface MenuService {
 	
 	public  JSONObject  selectAllMenu(String name,Page page);
 	
+	/**
+	 * 获取所有菜单权限
+	 */
+	public  List<Menu>  getAllMenu();
+	
 	public  List<Menu>  selectTolMenu();
 	
 	
