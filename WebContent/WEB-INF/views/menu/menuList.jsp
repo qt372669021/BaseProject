@@ -7,6 +7,7 @@
             <a href="#" class="easyui-linkbutton" iconCls="icon-adD2" onclick="openAdd()" plain="true">添加</a>
             <a href="#" class="easyui-linkbutton" iconCls="delete_D2" onclick="remove()" plain="true">删除</a>
             <a href="#" class="easyui-linkbutton" iconCls="edit_D2" onclick="openEdit()" plain="true">修改</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-adD2" onclick="openAddButtonMenu()" plain="true">添加按钮</a>
         </div>
       <div class="wu-toolbar-search">
             <label>菜单名称：</label><input id="search-name" class="wu-text" style="width:100px">
@@ -16,8 +17,6 @@
     <table id="data-datagrid" class="easyui-treegrid" toolbar="#wu-toolbar"></table>
 </div>
 <!-- 工具栏结束 -->
-
-<!-- 添加按钮弹窗 -->
 
 
 <!-- 选择图标弹窗(新增、修改) -->
@@ -37,6 +36,8 @@
 <!-- 删除 -->
 <jsp:include page="deleteMenu.jsp"/>
 
+<!-- 添加按钮弹窗 -->
+<jsp:include page="addButtonMenu.jsp"></jsp:include>
 
 <script type="text/javascript">
 	//搜索按钮监听

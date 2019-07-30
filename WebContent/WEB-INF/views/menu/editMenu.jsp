@@ -95,7 +95,7 @@
 	            	//判断是否是按钮
 	            	var parent = $('#data-datagrid').treegrid('getParent',item.id);
 	        		if(parent != null){
-	        			if(parent.parentId != 0){
+	        			if(parent.parentId != 0){//是按钮
 	            			$("#edit-parentId").combobox('setText',parent.name);
 	            			$("#edit-parentId").combobox('readonly',true);
 	            		}

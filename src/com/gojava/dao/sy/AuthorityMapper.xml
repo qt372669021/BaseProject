@@ -8,5 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result  column="roleId" 			property="roleId" 			jdbcType="NUMERIC" />
 		<result  column="menuId" 			property="menuId" 			jdbcType="NUMERIC" />
 	</resultMap>
-	
+	<insert id="addAuthority" parameterType="Map">
+		insert into  authority   (id,roleId,menuId) values(null,#{map.roleId},#{map.menuId})
+	</insert>
 </mapper>

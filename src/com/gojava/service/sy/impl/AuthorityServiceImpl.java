@@ -1,7 +1,9 @@
 package com.gojava.service.sy.impl;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +27,9 @@ public class AuthorityServiceImpl extends BaseServiceImpl<Authority,Serializable
 		if(authority ==null){
 			throw new SystemException("至少勾选一条权限！");
 		}
-		authorityDao.insertSelective(authority);
+		Map<String,Object> map=new HashMap<String,Object>();
+		map.put("map", authority);
+		authorityDao.addAuthority(map);
 
 	}
 
@@ -34,7 +38,7 @@ public class AuthorityServiceImpl extends BaseServiceImpl<Authority,Serializable
 		if(StringUtil.isEmpty(roleId.toString())){
 			throw new SystemException("请选择删除的信息");
 		}
-		List<Authority> lists=findListByRoleId(roleId);
+		List<Authority> lists=selectAuthorityByRoleId(roleId);
 		for(Authority  record:lists){
 			authorityDao.deleteByPrimaryKey(record.getId());
 		}
@@ -42,7 +46,7 @@ public class AuthorityServiceImpl extends BaseServiceImpl<Authority,Serializable
 	}
 
 	@Override
-	public List<Authority> findListByRoleId(Long roleId) {
+	public List<Authority> selectAuthorityByRoleId(Long roleId) {
 		Example example=new Example(Authority.class);
 		example.createCriteria().andEqualTo("roleId", roleId);
 		return authorityDao.selectByExample(example);

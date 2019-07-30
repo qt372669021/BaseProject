@@ -1,6 +1,7 @@
 package com.gojava.service.sy.impl;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,6 +62,11 @@ public class RoleServiceImpl  extends BaseServiceImpl<Role,Serializable> impleme
 		obj.put("total", count);
 		obj.put("rows", result.getRows());
 		return obj;
+	}
+
+	@Override
+	public List<Role> selectRoleList() {
+		return roleDao.selectAll();
 	}
 
 }

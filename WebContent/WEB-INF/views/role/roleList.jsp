@@ -55,7 +55,7 @@
 					{ field:'chk',checkbox:true},
 					{ field:'name',title:'角色名称',align:'center',width:$(this).width()*0.01,sortable:true},
 					{ field:'remark',title:'角色备注',align:'center',width:10,sortable:true},
-					{ field:'icon',title:'权限操作',align:'center',width:$(this).width()*0.01,formatter:function(value,row,index){
+					{ field:'icon',title:'权限操作',width:$(this).width()*0.01,formatter:function(value,row,index){
 						var test = '<a class="authority-edit" onclick="selectAuthority('+row.id+')"></a>'
 						return test;
 					}},

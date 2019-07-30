@@ -12,7 +12,7 @@
                 <td align="right">上级菜单:</td>
                 <td>
                 	<select name="parentId" class="easyui-combobox" panelHeight="auto" style="width:268px">
-		                <option value="0">顶级分类</option>
+		                <option value="0">--</option>
 		                <c:forEach items="${topMenu }" var="menu">
 		                <option value="${menu.id }">${menu.name }</option>
 		                </c:forEach>

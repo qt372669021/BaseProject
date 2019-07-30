@@ -8,17 +8,42 @@
 <script type="text/javascript">
 
 
-// step3 .判断是否有父类--来自官方文档,rows: 返回的菜单信息
-function exists(rows, parentId){
-	for(var i=0; i<rows.length; i++){
-		if (rows[i].id == parentId) 
+//某个角色已经拥有的权限
+var existAuthority = null;
+function isAdded(row,rows){
+	for(var k=0;k<existAuthority.length;k++){
+		if(existAuthority[k].menuId == row.id && haveParent(rows,row.parentId)){
+			//console.log(existAuthority[k].menuId+'---'+row.parentId);
 			return true;
+		}
 	}
 	return false;
 }
-//step2. 转换原始数据符号tree要求；
+
+//判断是否有父分类
+
+function haveParent(rows,parentId){
+	for(var i=0; i<rows.length; i++){
+		if (rows[i].id == parentId){
+			if(rows[i].parentId != 0) return true;
+		}
+	}
+	return false;
+}
+
+//判断是否有父类
+function exists(rows, parentId){
+	for(var i=0; i<rows.length; i++){
+		if (rows[i].id == parentId) return true;
+	}
+	return false;
+}
+
+//转换原始数据至符合tree的要求
 function convert(rows){
 	var nodes = [];
+	// get the top level nodes
+	//首先获取所有的父分类
 	for(var i=0; i<rows.length; i++){
 		var row = rows[i];
 		if (!exists(rows, row.parentId)){
@@ -28,23 +53,27 @@ function convert(rows){
 			});
 		}
 	}
-
+	
 	var toDo = [];
 	for(var i=0; i<nodes.length; i++){
 		toDo.push(nodes[i]);
 	}
-	
 	while(toDo.length){
-		var node = toDo.shift();	
+		var node = toDo.shift();	// the parent node
+		// get the children nodes
 		for(var i=0; i<rows.length; i++){
 			var row = rows[i];
 			if (row.parentId == node.id){
 				var child = {id:row.id,text:row.name};
+				if(isAdded(row,rows)){
+					child.checked = true;
+				}
 				if (node.children){
 					node.children.push(child);
 				} else {
 					node.children = [child];
 				}
+				//把刚才创建的孩子再添加到父分类的数组中
 				toDo.push(child);
 			}
 		}
@@ -52,65 +81,73 @@ function convert(rows){
 	return nodes;
 }
 
-
-	function selectAuthority(){
-		//打开窗口
-		$('#select-authority-dialog').dialog({
-			closed: false,
-			modal:true,
-	        title: "选择权限",
-	        buttons: [{
-	            text: '确定',
-	            iconCls: 'icon-ok',
-	            handler: function(){
-	            	//获取选中的值
-	            	var ids='';
-	            	var nodes = $('#authority-tree').tree('getChecked');//获取勾选的，排除上级的
-	            	 for(var i=0;i<nodes.length;i++){
-	            		 ids+=nodes[i].id+',';
-	            	 }
-	            	var nodesParent = $('#authority-tree').tree('getChecked', 'indeterminate');//获取勾选上级，排除本身；
-	            	  for(var i=0;i<nodesParent.length;i++){
-	            		  ids+=nodesParent[i].id+',';
-	            	  }
-	            	if(ids !=''){
-	            		var item = $('#data-datagrid').datagrid('getSelected');
-	            		console.log(item);
-	            		$.ajax({
-	            			url:'<%=request.getContextPath()%>/authority/addAuthority',
-	            			type:'post',
-	            			data:{ids:ids,roleId:item.id},
-	            			dataType:'json',
-	            			success:function(data){
-	            				if(data.code=200){
-	            					$.messager.alert('信息提示','权限编辑成功！','info');
-	            					$('#select-authority-dialog').dialog('close');
-	            				}else{
-	            					$.messager.alert('信息提示',data.msg,'warning');
-	            				}
-	            			}
-	            		});
-	            	}
-	            }
-	        }, {
-	            text: '取消',
-	            iconCls: 'icon-cancel',
-	            handler: function () {
-	                $('#select-authority-dialog').dialog('close');                    
-	            }
-	        }],
-	      //在窗口弹出之前要加载
-	        onBeforeOpen:function(){
-	        	$('#authority-tree').tree({
-	        	//获取改角色拥有的权限
-	        		loadFilter: function(rows){
-	        			//step1.
-	        			return convert(rows);
-	        		}
-	        	});
-	        }
-	    });
-	}
+//打开权限选择框
+function selectAuthority(roleId){
+	$('#select-authority-dialog').dialog({
+		closed: false,
+		modal:true,
+        title: "选择权限信息",
+        buttons: [{
+            text: '确定',
+            iconCls: 'icon-ok',
+            handler: function(){
+            	var checkedNodes = $("#authority-tree").tree('getChecked');//获取勾选的，排除上级的
+            	var ids = '';
+            	for(var i=0;i<checkedNodes.length;i++){
+            		ids += checkedNodes[i].id + ',';
+            	}
+            	var checkedParentNodes = $("#authority-tree").tree('getChecked', 'indeterminate');//获取勾选上级，排除本身；
+            	for(var i=0;i<checkedParentNodes.length;i++){
+            		ids += checkedParentNodes[i].id + ',';
+            	}
+            	//console.log(ids);
+            	if(ids != ''){
+            		
+            		$.ajax({
+            			url:'<%=request.getContextPath()%>/authority/addAuthority',
+            			type:"post",
+            			data:{ids:ids,roleId:roleId},
+            			dataType:'json',
+            			success:function(data){
+            				if(data.code == 200){
+            					$.messager.alert('信息提示','权限编辑成！','info');
+            					$('#select-authority-dialog').dialog('close');
+            				}else{
+            					$.messager.alert('信息提示',data.msg,'info');
+            				}
+            			}
+            		});
+            	}else{
+            		$.messager.alert('信息提示','请至少选择一条权限！','info');
+            	}
+            }
+        }, {
+            text: '取消',
+            iconCls: 'icon-cancel',
+            handler: function () {
+                $('#select-authority-dialog').dialog('close');                    
+            }
+        }],
+        onBeforeOpen:function(){
+    		//首先获取该角色已经拥有的权限
+    		$.ajax({
+    			url:'<%=request.getContextPath()%>/authority/selectAuthorityByRoleId',
+    			data:{roleId:roleId},
+    			type:'post',
+    			dataType:'json',
+    			success:function(data){
+    				existAuthority = data;
+    				$("#authority-tree").tree({
+                		loadFilter: function(rows){
+                			return convert(rows);
+                		}
+                	});
+    			}
+    		});
+        	
+        }
+    });
+}
 	
 
 		

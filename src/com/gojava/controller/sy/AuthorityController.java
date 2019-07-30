@@ -53,4 +53,12 @@ public class AuthorityController {
 		}
 		return Result.ok();
 	}
+	
+	@RequestMapping(value="/selectAuthorityByRoleId",method=RequestMethod.POST)
+	@ResponseBody
+	public  List<Authority> selectAuthorityByRoleId(Long roleId){
+		return authorityService.selectAuthorityByRoleId(roleId);
+	}
+	
+	
 }

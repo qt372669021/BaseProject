@@ -9,15 +9,23 @@ import javax.persistence.*;
 @Table(name="user")
 public class User {
 	@Id
-	private Long id;//
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
 	@Column(name = "username")
-	private String username;//
+	private String username;
+	
 	@Column(name = "password")
-	private String password;//
+	private String password;
+	
 	@Column(name = "roleId")
 	private Long roleId;//所属角色id
-	private String photo;//ַ
-	private int sex;//
-	private Integer age;//
-	private String address;//
+	
+	private  String photo;
+	
+	private int sex;
+	
+	private Integer age;
+	
+	private String address;
 }

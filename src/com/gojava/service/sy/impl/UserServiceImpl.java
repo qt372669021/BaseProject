@@ -11,12 +11,15 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.entity.Example.Criteria;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.util.StringUtil;
 import com.gojava.common.BaseServiceImpl;
+import com.gojava.common.PaginationResult;
 import com.gojava.common.exception.SystemException;
 import com.gojava.dao.sy.UserDao;
 import com.gojava.entity.sy.User;
 import com.gojava.service.sy.UserService;
+import com.gojava.util.Page;
 @Service
 public class UserServiceImpl extends BaseServiceImpl<User,Serializable>implements UserService{
 	@Autowired
@@ -58,6 +61,62 @@ public class UserServiceImpl extends BaseServiceImpl<User,Serializable>implement
 			}
 			req.getSession().setAttribute("login_user", u);
 		}
+	}
+
+	@Override
+	public JSONObject selectUser(Page page, User user) {
+		Example example=new Example(User.class);
+		Criteria cri=example.createCriteria();
+		if(StringUtil.isNotEmpty(user.getUsername())){
+			cri.andLike("username", "%"+user.getUsername()+"%");
+		}
+		int count=userDao.selectCountByExample(example);
+		PaginationResult<User>  pagUser=	super.selectPageByExample(page.getPage(), page.getRows(), example);
+		JSONObject json=new JSONObject();
+		json.put("rows", pagUser.getRows());
+		json.put("total", count);
+		return json;
+	}
+
+	@Override
+	public void addUser(User user) {
+		if(user ==null){
+			throw new SystemException("请填写用户信息");
+		}
+		if( StringUtil.isEmpty(user.getUsername())){
+			throw new SystemException("用户名称不能为空");
+		}
+		if( StringUtil.isEmpty(user.getPassword())){
+			throw new SystemException("密码不能为空");
+		}
+	 if(selectOneUser(user.getUsername())){
+		 throw new SystemException("用户名"+user.getUsername()+"已经存在");
+	 }
+		userDao.insertSelective(user);
+		
+	}
+
+	public  Boolean selectOneUser(String username){
+		Example example=new Example(User.class);
+		example.createCriteria().andEqualTo("username", username);
+		List<User> lists=userDao.selectByExample(example);
+		if(lists !=null  && lists.size()>0){
+			return true;
+		}else{
+			return  false;
+		}
+	}
+	
+	@Override
+	public void deleteUser(Long id) {
+		userDao.deleteByPrimaryKey(id);
+		
+	}
+
+	@Override
+	public void editUser(User user) {
+		userDao.updateByPrimaryKeySelective(user);
+		
 	}
 
 }
