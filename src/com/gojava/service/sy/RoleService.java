@@ -13,5 +13,7 @@ public interface RoleService {
 	public JSONObject selectRoleList(Page page,Role role);
 	
 	public  List<Role>  selectRoleList();
+	
+	public Role selectRoleById(Long id);
 
 }

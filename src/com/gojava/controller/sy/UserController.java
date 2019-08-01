@@ -38,8 +38,8 @@ public class UserController {
 	}
 	@RequestMapping(value="/deleteUser",method=RequestMethod.POST)
 	@ResponseBody
-	public  Result deleteUser(Long id){
-		userService.deleteUser( id);
+	public  Result deleteUser(String ids){
+		userService.deleteUser(ids);
 		return  Result.ok();
 	}
 	@RequestMapping(value="/editUser",method=RequestMethod.POST)

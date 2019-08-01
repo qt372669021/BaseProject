@@ -20,5 +20,9 @@ public interface MenuService {
 	
 	public  List<Menu>  selectTolMenu();
 	
-	
+	/**
+	 * ids为角色所拥有的菜单id，一个角色对应多个菜单id
+
+	 */
+	public List<Menu> selectMenuByMenuIds(String ids);
 }

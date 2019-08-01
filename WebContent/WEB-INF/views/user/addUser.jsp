@@ -61,7 +61,6 @@
 		}
 		//序列化表单内容为字符串(k:v格式),用于Ajax请求
 		var vdata = $("#add-form").serialize();///序列化表格内容为字符串,k:v,格式
-		console.log(vdata);
 		$.ajax({
 			url:'<%=request.getContextPath()%>/user/addUser',//把请求发送到哪个 URL
 			dataType:'json',//可选。规定预期的服务器响应的数据类型。

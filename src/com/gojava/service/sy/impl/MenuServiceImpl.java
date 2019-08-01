@@ -1,12 +1,15 @@
 package com.gojava.service.sy.impl;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import tk.mybatis.mapper.entity.Example;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.util.StringUtil;
@@ -83,6 +86,19 @@ public class MenuServiceImpl  extends BaseServiceImpl<Menu,Serializable> impleme
 	@Override
 	public List<Menu> getAllMenu() {
 		return  menuDao.selectAll();
+	}
+	
+	/**
+	 * 通过角色所拥有的菜单id 查询菜单
+	 */
+	@Override
+	public List<Menu> selectMenuByMenuIds(String ids) {
+		List<Menu> menuList=new ArrayList<Menu>();
+		String[] manuId=ids.split(",");
+		for(String id:manuId){
+			menuList.add(menuDao.selectByPrimaryKey(Long.valueOf(id)));
+		}
+	return menuList;
 	}
 
 }

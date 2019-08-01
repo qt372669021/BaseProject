@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="copyright" content="All Rights Reserved, Copyright (C) 2013, Wuyeguo, Ltd." />
-<title>gojava管理系统</title>
+<meta name="copyright" content="All Rights Reserved, Copyright (C) 2019, Wuyeguo, Ltd." />
+<title>gojava管理系统-${login_user.username }</title>
+<link rel="Shortcut Icon" href="<%=request.getContextPath()%>/resource/admin/login/images/logo.png" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/admin/easyui/easyui/1.3.4/themes/default/easyui.css" />
 <link rel="stylesheet" type="text/css" href="../resources/admin/easyui/css/wu.css" />
 <link rel="stylesheet" type="text/css" href="../resources/admin/easyui/css/icon.css" />
@@ -34,36 +36,32 @@
 	<!-- begin of header -->
 	<div class="wu-header" data-options="region:'north',border:false,split:true">
     	<div class="wu-header-left">
-        	<h1>EasyUI Web Admin</h1>
+        	<h1>一起开发之旅</h1>
         </div>
         <div class="wu-header-right">
         	<p><strong class="easyui-tooltip" title="2条未读消息">${login_user.username}</strong>，欢迎您！</p>
-            <p><a href="#">网站首页</a>|<a href="#">支持论坛</a>|<a href="#">帮助中心</a>|<a href="#">安全退出</a></p>
+            <p><a href="#">网站首页</a>|<a href="#">支持论坛</a>|<a href="#">帮助中心</a>|<a href="<%=request.getContextPath()%>/system/logout">安全退出</a></p>
         </div>
     </div>
     <!-- end of header -->
     <!-- begin of sidebar -->
 	<div class="wu-sidebar" data-options="region:'west',split:true,border:true,title:'导航菜单'"> 
     	<div class="easyui-accordion" data-options="border:false,fit:true"> 
-        	<div title="系统管理" data-options="iconCls:'icon-application-cascade'" style="padding:5px;">  	
-    			<ul class="easyui-tree wu-side-tree">
-                	<li iconCls="icon-chart-organisation"><a href="javascript:void(0)" data-icon="icon-chart-organisation" data-link="<%=request.getContextPath()%>/menu/menuList" iframe="0">菜单管理</a></li>
-                    <li iconCls="icon-user-group"><a href="javascript:void(0)" data-icon="icon-user-group" data-link="<%=request.getContextPath()%>/role/showRoleList" iframe="0">角色管理</a></li>
-                    <li iconCls="icon-users"><a href="javascript:void(0)" data-icon="icon-users" data-link="<%=request.getContextPath()%>/user/showUser" iframe="0">用户管理</a></li>
-                    <li iconCls="icon-book"><a href="javascript:void(0)" data-icon="icon-book" data-link="temp/layout-3.html" iframe="0">数据字典</a></li>
-                    <li iconCls="icon-cog"><a href="javascript:void(0)" data-icon="icon-cog" data-link="temp/layout-3.html" iframe="0">系统参数</a></li>
-                    <li iconCls="icon-application-osx-error"><a href="javascript:void(0)" data-icon="icon-application-osx-error" data-link="temp/layout-3.html" iframe="0">操作日志</a></li>
-                </ul>
-            </div>
+    		<c:forEach items="${topMenuList}" var ="topMenu">
+	        	<div title="${topMenu.name}" data-options="iconCls:'${topMenu.icon }'" style="padding:5px;">  	
+	    			<ul class="easyui-tree wu-side-tree">
+	    				<c:forEach items="${secondMenuList}" var="secondMenu">
+	    					<c:if test="${topMenu.id==secondMenu.parentId }">
+			                	<li iconCls="${secondMenu.icon }"><a href="javascript:void(0)" data-icon="${secondMenu.icon }" data-link="<%=request.getContextPath()%>/${secondMenu.url}" iframe="0">${secondMenu.name }</a></li>
+	                		</c:if>
+	                	</c:forEach>
+	                </ul>
+	            </div>
+  			</c:forEach>
   
-            <div title="系统设置" data-options="iconCls:'icon-wrench'" style="padding:5px;">  	
+            <div title="测试" data-options="iconCls:'icon-wrench'" style="padding:5px;">  	
     			<ul class="easyui-tree wu-side-tree">
-                	<li iconCls="icon-chart-organisation"><a href="javascript:void(0)" data-icon="icon-chart-organisation" data-link="layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-users"><a href="javascript:void(0)" data-icon="icon-users" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-user-group"><a href="javascript:void(0)" data-icon="icon-user-group" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-book"><a href="javascript:void(0)" data-icon="icon-book" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-cog"><a href="javascript:void(0)" data-icon="icon-cog" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-application-osx-error"><a href="javascript:void(0)" data-icon="icon-application-osx-error" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
+                	<li iconCls="icon-chart-organisation"><a href="javascript:void(0)" data-icon="icon-chart-organisation" data-link="<%=request.getContextPath()%>/test/testList" iframe="0">测试guanli</a></li>
                 </ul>
             </div>
         </div>

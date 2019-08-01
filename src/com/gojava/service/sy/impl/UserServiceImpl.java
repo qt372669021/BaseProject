@@ -17,13 +17,27 @@ import com.gojava.common.BaseServiceImpl;
 import com.gojava.common.PaginationResult;
 import com.gojava.common.exception.SystemException;
 import com.gojava.dao.sy.UserDao;
+import com.gojava.entity.sy.Authority;
+import com.gojava.entity.sy.Menu;
+import com.gojava.entity.sy.Role;
 import com.gojava.entity.sy.User;
+import com.gojava.service.sy.AuthorityService;
+import com.gojava.service.sy.MenuService;
+import com.gojava.service.sy.RoleService;
 import com.gojava.service.sy.UserService;
 import com.gojava.util.Page;
 @Service
 public class UserServiceImpl extends BaseServiceImpl<User,Serializable>implements UserService{
 	@Autowired
 	private UserDao  userDao;
+	
+	@Autowired
+	private  RoleService  roleService;
+	
+	@Autowired
+	private  AuthorityService  authorityService;
+	@Autowired
+	private MenuService  menuService;
 	
 	@Override
 	public void selectLogin(User user,String cpacha, HttpServletRequest req) {
@@ -59,7 +73,21 @@ public class UserServiceImpl extends BaseServiceImpl<User,Serializable>implement
 			if(!u.getPassword().equals(user.getPassword())){
 				throw new SystemException("密码错误！");
 			}
+			//查询用户角色，权限
+			Role role=roleService.selectRoleById(u.getRoleId());
+			List<Authority> authorityLists=authorityService.selectAuthorityByRoleId(role.getId());
+			String  manuIds="";
+			for(Authority  authority:authorityLists){
+				manuIds+=authority.getMenuId()+",";
+			}
+			if(manuIds.contains(",")){
+				manuIds=manuIds.substring(0, manuIds.length()-1);
+			}
+			List<Menu> userMenu=	menuService.selectMenuByMenuIds(manuIds);
+			//角色 菜单信息放入到session中
 			req.getSession().setAttribute("login_user", u);
+			req.getSession().setAttribute("userMenu", userMenu);
+			req.getSession().setAttribute("role", role);
 		}
 	}
 
@@ -107,16 +135,49 @@ public class UserServiceImpl extends BaseServiceImpl<User,Serializable>implement
 		}
 	}
 	
+/*	@Override
+	public void deleteUser(String  ids) {
+	  if(ids.contains(",")){
+		  ids.substring(0, ids.length()-1);
+	  }
+	  String[]  strs=ids.split(",");
+	  for(String sid:strs){
+		  userDao.deleteByPrimaryKey(Long.valueOf(sid));
+	  }
+		
+	}*/
+	
 	@Override
-	public void deleteUser(Long id) {
-		userDao.deleteByPrimaryKey(id);
+	public void deleteUser(String  ids) {
+		String[] strs=ids.split(",");
+		 for(String sid:strs){
+			  userDao.deleteByPrimaryKey(Long.valueOf(sid));
+		  }
 		
 	}
-
+	
 	@Override
 	public void editUser(User user) {
+ 		if(isExist(user.getUsername(),user.getId())){
+			throw new SystemException("用户名"+user.getUsername()+"存在");
+		}
 		userDao.updateByPrimaryKeySelective(user);
 		
 	}
-
+	private boolean isExist(String username,Long id){
+		Boolean flag=true;
+		Example example =new Example(User.class);
+		Criteria cri=example.createCriteria();
+		cri.andEqualTo("username", username);
+		List<User> user = userDao.selectByExample(example);
+		if(user == null){//不存在
+			return !flag;
+		}
+		if(user !=null && user.size()>0){
+			if(user.get(0).getId().longValue() == id.longValue()){
+				return flag;
+			}
+		}
+		return  !flag;
+	}
 }

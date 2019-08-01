@@ -69,4 +69,10 @@ public class RoleServiceImpl  extends BaseServiceImpl<Role,Serializable> impleme
 		return roleDao.selectAll();
 	}
 
+	@Override
+	public Role selectRoleById(Long id) {
+		
+		return roleDao.selectByPrimaryKey(id);
+	}
+
 }

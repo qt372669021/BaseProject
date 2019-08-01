@@ -51,7 +51,7 @@
 		});
 	});
 	
-	//载入
+	//载入  数据绑定
 	$('#data-datagrid').datagrid({
 		url:'${path}/user/selectUser',
 		rownumbers:true,
@@ -70,14 +70,29 @@
 					{ field:'roleId',title:'所属角色',align:'center',width:10,sortable:true,formatter:function(value,row,index){
 						var roleList = $("#search-role").combobox('getData');
 						for(var i=0;i<roleList.length;i++){
-							if(value == roleList[i].value)return roleList[i].text;
+							if(value == roleList[i].value){//角色id
+								return roleList[i].text;//角色名称
+							}
 						}
 						return value;
 					}},
 					{ field:'age',title:'年龄',align:'center',width:10,sortable:true},
 					{ field:'photo',title:'照片',align:'center',width:10,sortable:true},
 					{ field:'address',title:'地址',align:'center',width:10,sortable:true},
-					{ field:'sex',title:'性别',align:'center',width:10,sortable:true},
+					{ field:'sex',title:'性别',align:'center',width:10,formatter:function(value,row,index){
+						switch(value){
+						case 0:{
+							return '未知';
+						}
+						case 1:{
+							return '男';
+						}
+						case 2:{
+							return '女';
+						}
+					}
+					return value;
+				}},
 					
 				]],
 			});

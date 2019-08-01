@@ -10,6 +10,6 @@ public interface  UserService   {
 	  public void selectLogin(User user, String cpacha,HttpServletRequest request);
 	  public JSONObject  selectUser(Page page, User user);
 	  public void  addUser (User user);
-	  public void  deleteUser (Long id);
+	  public void  deleteUser (String ids);
 	  public void  editUser (User user);
 }
