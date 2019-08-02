@@ -4,10 +4,7 @@
     <!-- 工具栏 -->
     <div id="wu-toolbar">
         <div class="wu-toolbar-button">
-            <a href="#" class="easyui-linkbutton" iconCls="icon-adD2" onclick="openAdd()" plain="true">添加</a>
-            <a href="#" class="easyui-linkbutton" iconCls="delete_D2" onclick="remove()" plain="true">删除</a>
-            <a href="#" class="easyui-linkbutton" iconCls="edit_D2" onclick="openEdit()" plain="true">修改</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-adD2" onclick="openAddButtonMenu()" plain="true">添加按钮</a>
+        	<jsp:include page="../common/menus.jsp"></jsp:include>
         </div>
       <div class="wu-toolbar-search">
             <label>菜单名称：</label><input id="search-name" class="wu-text" style="width:100px">

@@ -12,4 +12,5 @@ public interface  UserService   {
 	  public void  addUser (User user);
 	  public void  deleteUser (String ids);
 	  public void  editUser (User user);
+	  public  void  modifPassWord(User user);
 }

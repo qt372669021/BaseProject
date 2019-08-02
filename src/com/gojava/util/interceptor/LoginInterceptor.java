@@ -1,6 +1,7 @@
 package com.gojava.util.interceptor;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,10 @@ import net.sf.json.JSONObject;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.github.pagehelper.util.StringUtil;
+import com.gojava.entity.sy.Menu;
+import com.gojava.util.MenuUtil;
 /**
  * 后台登录拦截器
  * 
@@ -48,6 +53,14 @@ public class LoginInterceptor implements HandlerInterceptor{
 			}
 			resp.sendRedirect(req.getContextPath()+"/system/login");
 			return  false;
+		}
+		
+		String mid=req.getParameter("_mid");//获取参数值
+		if(StringUtil.isNotEmpty(mid)){
+		@SuppressWarnings("unchecked")
+		List<Menu>  m=	(List<Menu>)req.getSession().getAttribute("userMenu");
+		List<Menu> thiredMenu=MenuUtil.getThiredMenu(m, Long.valueOf(mid));
+		req.getSession().setAttribute("thiredMenu", thiredMenu);
 		}
 		return true;//拦截，不执行了
 		

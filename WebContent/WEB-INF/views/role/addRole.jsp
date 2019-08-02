@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=Utf-8"  pageEncoding="Utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+</head>
+<body>
 <!-- 新增角色弹窗 -->
 <div id="add-dialog" class="easyui-dialog" data-options="closed:true,iconCls:'icon-save'" style="width:450px; padding:10px;">
 	<form id="add-form" method="post">
@@ -63,5 +69,6 @@
             }]
         });
 	}
-	
 </script>
+</body>
+</html>

@@ -180,4 +180,10 @@ public class UserServiceImpl extends BaseServiceImpl<User,Serializable>implement
 		}
 		return  !flag;
 	}
+
+	@Override
+	public void modifPassWord(User user) {
+	 userDao.updateByPrimaryKeySelective(user);
+	}
+
 }

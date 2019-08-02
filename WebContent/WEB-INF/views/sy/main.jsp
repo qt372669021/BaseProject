@@ -52,7 +52,7 @@
 	    			<ul class="easyui-tree wu-side-tree">
 	    				<c:forEach items="${secondMenuList}" var="secondMenu">
 	    					<c:if test="${topMenu.id==secondMenu.parentId }">
-			                	<li iconCls="${secondMenu.icon }"><a href="javascript:void(0)" data-icon="${secondMenu.icon }" data-link="<%=request.getContextPath()%>/${secondMenu.url}" iframe="0">${secondMenu.name }</a></li>
+			                	<li iconCls="${secondMenu.icon }"><a href="javascript:void(0)" data-icon="${secondMenu.icon }" data-link="<%=request.getContextPath()%>/${secondMenu.url}?_mid=${secondMenu.id}" iframe="0">${secondMenu.name }</a></li>
 	                		</c:if>
 	                	</c:forEach>
 	                </ul>

@@ -36,4 +36,18 @@ public class MenuUtil {
 		}
 		return  list;
 	}
+	
+	/**
+	 * 获取二级菜单的按钮（curd）
+	 */
+	public  static List<Menu>  getThiredMenu(List<Menu> menuList,Long secondId){
+		List<Menu> list=new ArrayList<Menu>();
+		for(Menu menu:menuList){
+			if(menu.getParentId()==secondId){
+				list.add(menu);
+			}
+		}
+		return list;
+	}
+	
 }

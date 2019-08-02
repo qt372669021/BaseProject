@@ -1,6 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=Utf-8"  pageEncoding="Utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <% pageContext.setAttribute("path", request.getContextPath()); %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+</head>
+<body class="easyui-layout">
 <div class="easyui-layout" data-options="fit:true">
     <!-- 工具栏 -->
     <div id="wu-toolbar">
@@ -16,6 +23,7 @@
     </div>
     <table id="data-datagrid" class="easyui-datagrid" toolbar="#wu-toolbar"></table>
  </div>   
+
 <!-- 工具栏结束 -->
 
 
@@ -65,3 +73,5 @@
 				 }  
 			});
 </script>
+</body>
+</html>

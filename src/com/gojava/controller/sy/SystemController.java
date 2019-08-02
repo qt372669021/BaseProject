@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import tk.mybatis.mapper.util.StringUtil;
+
+import com.gojava.common.Result;
+import com.gojava.common.exception.SystemException;
 import com.gojava.entity.sy.Menu;
 import com.gojava.entity.sy.User;
 import com.gojava.service.sy.UserService;
@@ -106,5 +110,28 @@ public class SystemController {
 			session.setAttribute("role", null);
 			session.setAttribute("userMenu", null);
 			return  "redirect:login";
+		}
+		
+		//修改密码--窗口
+		@RequestMapping(value="/editPassWord",method=RequestMethod.GET)
+		public  ModelAndView  editPassWord(ModelAndView mv){
+			mv.setViewName("sy/password");
+			return  mv;
+		}
+		
+		//修改密码
+		@RequestMapping(value="/modifyPassWord",method=RequestMethod.POST)
+		@ResponseBody
+		public  Result  modifyPassWord(String oldpassword,String newpassword,HttpServletRequest req){
+			if(StringUtil.isEmpty(oldpassword)){
+				throw new SystemException("原密码不能为空！");
+			}
+		User user=(User)req.getSession().getAttribute("login_user");
+		if(!user.getPassword().equals(oldpassword)){
+			throw new SystemException("原密码输入有误");
+		}
+		user.setPassword(newpassword);
+		userService.modifPassWord(user);
+			return  Result.ok();
 		}
 }
